@@ -1,0 +1,66 @@
+# Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Logs
+logs/
+*.log
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# Build output
+*.class
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test reports
+/test-output/
+/surefire-reports/
+/jacoco.exec
+
+# Coverage reports
+coverage/
+jacoco-report/
+
+# Spring Boot specific
+spring.log
+
+# Application properties (optional sensitive)
+# src/main/resources/application.properties
+# src/main/resources/application.yml
+
+# Database files (optional if you have local db files)
+*.h2.db
+*.mv.db
+
+# Docker
+**/docker-compose.override.yml
+
+# Node.js (optional if you add frontend in future)
+node_modules/
+
+# IDE metadata
+*.swp
+*.swo
+
+# Others
+*.bak
+*.tmp
+*.orig
+
