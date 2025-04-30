@@ -1,0 +1,28 @@
+@host = http://localhost:8080
+
+### Crear ticket
+POST {{host}}/api/tickets
+Content-Type: application/json
+
+{
+  "title": "Error en login",
+  "description": "No puedo iniciar sesión con mi cuenta"
+}
+
+### Obtener todos los tickets
+GET {{host}}/api/tickets
+
+### Obtener ticket por ID
+GET {{host}}/api/tickets/1
+
+### Actualizar un ticket
+PUT {{host}}/api/tickets/1
+Content-Type: application/json
+
+{
+  "title": "Error crítico en login",
+  "description": "Pantalla blanca al ingresar"
+}
+
+### Eliminar ticket
+DELETE {{host}}/api/tickets/2
