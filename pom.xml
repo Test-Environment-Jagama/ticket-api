@@ -10,11 +10,19 @@
     <packaging>jar</packaging>
 
     <properties>
+        <!-- Centralización de versiones -->
         <java.version>17</java.version>
         <spring-boot.version>3.4.5</spring-boot.version>
+        <junit.version>5.10.2</junit.version>
+        <mockito.version>5.10.0</mockito.version>
+        <jacoco.version>0.8.10</jacoco.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
     </properties>
+
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot Dependencies -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -24,8 +32,8 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <dependencies>
 
+    <dependencies>
         <!-- Spring Boot Starter Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,7 +46,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Dependencia para pruebas -->
+        <!-- Spring Boot Starter Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -65,27 +73,27 @@
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
-        <!-- JUnit 5 API y Engine -->
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>          
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Mockito para pruebas unitarias -->
+
+        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.10.0</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        
-        <!-- Jackson para serialización/deserialización JSON -->
+
+        <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -95,10 +103,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -107,20 +117,24 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+            <!-- Maven Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
                 </configuration>
             </plugin>
+
+            <!-- JaCoCo Maven Plugin -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -135,11 +149,8 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <!-- Exclude Main class -->
                                 <exclude>com/tuempresa/ticketapi/TicketApiApplication*</exclude>
-                                <!-- Exclude configuration class -->
                                 <exclude>com/tuempresa/ticketapi/config/**</exclude>
-                                <!-- Exclude DTOs or models -->
                                 <exclude>com/tuempresa/ticketapi/model/**</exclude>
                             </excludes>
                         </configuration>
