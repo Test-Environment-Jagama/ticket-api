@@ -44,7 +44,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(Long id) {
-        Ticket ticket = getTicketById(id);
-        ticketRepository.delete(ticket);
+        ticketRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + id));
+        ticketRepository.deleteById(id);
     }
 }
