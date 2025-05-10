@@ -2,7 +2,9 @@ package com.tuempresa.ticketapi.service;
 
 import com.tuempresa.ticketapi.model.Ticket;
 import com.tuempresa.ticketapi.repository.TicketRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Ticket createTicket(Ticket ticket) {
@@ -48,4 +53,13 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + id));
         ticketRepository.deleteById(id);
     }
+
+    @SuppressWarnings("unchecked")
+    public List<Ticket> findTicketsByTitle(String title) {
+        String query = "SELECT * FROM ticket WHERE title = :title";
+        return entityManager.createNativeQuery(query, Ticket.class)
+                .setParameter("title", title)
+                .getResultList();
+    }
+
 }

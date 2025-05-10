@@ -5,7 +5,6 @@ import com.tuempresa.ticketapi.service.TicketService;
 import com.tuempresa.ticketapi.service.TicketServiceImpl;
 import com.tuempresa.ticketapi.repository.TicketRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
