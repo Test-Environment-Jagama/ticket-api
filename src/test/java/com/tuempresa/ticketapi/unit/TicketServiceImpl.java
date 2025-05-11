@@ -1,25 +1,46 @@
 package com.tuempresa.ticketapi.unit;
 
 import com.tuempresa.ticketapi.model.Ticket;
-import com.tuempresa.ticketapi.service.TicketService;
-import com.tuempresa.ticketapi.service.TicketServiceImpl;
 import com.tuempresa.ticketapi.repository.TicketRepository;
+import com.tuempresa.ticketapi.service.TicketServiceImpl;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import java.time.LocalDateTime;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class TicketServiceTest {
 
-    private final TicketRepository ticketRepository = mock(TicketRepository.class);
-    private final TicketService ticketService = new TicketServiceImpl(ticketRepository);
+    private TicketRepository ticketRepository;
+    private EntityManager entityManager;
+    private TicketServiceImpl ticketService;
+
+    @BeforeEach
+    void setUp() {
+        ticketRepository = mock(TicketRepository.class);
+        entityManager = mock(EntityManager.class);
+        ticketService = new TicketServiceImpl(ticketRepository);
+        // Inyecta el EntityManager simulado usando reflexión
+        try {
+            var field = TicketServiceImpl.class.getDeclaredField("entityManager");
+            field.setAccessible(true);
+            field.set(ticketService, entityManager);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     void testCreateTicket() {
-        // Arrange
         Ticket input = Ticket.builder()
                 .title("Test Ticket")
                 .description("Test Description")
@@ -29,17 +50,15 @@ class TicketServiceTest {
 
         when(ticketRepository.save(any(Ticket.class))).thenReturn(input);
 
-        // Act
         Ticket result = ticketService.createTicket(input);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Test Ticket", result.getTitle());
         verify(ticketRepository, times(1)).save(any(Ticket.class));
     }
+
     @Test
     void testGetAllTickets() {
-        // Arrange
         Ticket ticket1 = Ticket.builder()
                 .id(1L)
                 .title("Ticket 1")
@@ -58,14 +77,13 @@ class TicketServiceTest {
 
         when(ticketRepository.findAll()).thenReturn(List.of(ticket1, ticket2));
 
-        // Act
         List<Ticket> result = ticketService.getAllTickets();
 
-        // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
         verify(ticketRepository, times(1)).findAll();
     }
+
     @Test
     void testGetTicketById() {
         // Arrange
@@ -90,8 +108,21 @@ class TicketServiceTest {
     }
 
     @Test
+    void testGetTicketByIdNotFound() {
+        Long ticketId = 999L;
+        Query query = mock(Query.class);
+        when(entityManager.createNativeQuery(anyString(), eq(Ticket.class))).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(null);
+
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
+            ticketService.getTicketById(ticketId);
+        });
+
+        assertTrue(thrown.getMessage().contains("Ticket not found"));
+    }
+
+    @Test
     void testUpdateTicket() {
-        // Arrange
         Long ticketId = 1L;
         Ticket existingTicket = Ticket.builder()
                 .id(ticketId)
@@ -109,21 +140,19 @@ class TicketServiceTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        when(ticketRepository.findById(ticketId)).thenReturn(java.util.Optional.of(existingTicket));
+        when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(existingTicket));
         when(ticketRepository.save(any(Ticket.class))).thenReturn(updatedTicket);
 
-        // Act
         Ticket result = ticketService.updateTicket(ticketId, updatedTicket);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Updated Title", result.getTitle());
         verify(ticketRepository, times(1)).findById(ticketId);
         verify(ticketRepository, times(1)).save(any(Ticket.class));
     }
+
     @Test
     void testDeleteTicket() {
-        // Arrange
         Long ticketId = 1L;
         Ticket ticket = Ticket.builder()
                 .id(ticketId)
@@ -133,14 +162,11 @@ class TicketServiceTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        when(ticketRepository.findById(ticketId)).thenReturn(java.util.Optional.of(ticket));
+        when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));
 
-        // Act
         ticketService.deleteTicket(ticketId);
 
-        // Assert
         verify(ticketRepository, times(1)).findById(ticketId);
         verify(ticketRepository, times(1)).deleteById(ticketId);
     }
-    
 }

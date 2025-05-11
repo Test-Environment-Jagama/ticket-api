@@ -2,7 +2,10 @@ package com.tuempresa.ticketapi.service;
 
 import com.tuempresa.ticketapi.model.Ticket;
 import com.tuempresa.ticketapi.repository.TicketRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Ticket createTicket(Ticket ticket) {
@@ -47,5 +53,15 @@ public class TicketServiceImpl implements TicketService {
         ticketRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + id));
         ticketRepository.deleteById(id);
+    }
+
+    /**
+     * Método vulnerable solo para pruebas de análisis estático.
+     * No debe usarse en producción.
+     */
+    public void vulnerableSql(String userInput) {
+        // Vulnerabilidad: concatenación directa en consulta SQL
+        String sql = "SELECT * FROM ticket WHERE description = '" + userInput + "'";
+        entityManager.createNativeQuery(sql);
     }
 }

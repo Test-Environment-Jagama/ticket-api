@@ -63,4 +63,5 @@ node_modules/
 *.bak
 *.tmp
 *.orig
+*.sonarlint
 
