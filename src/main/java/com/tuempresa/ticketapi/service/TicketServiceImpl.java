@@ -59,9 +59,18 @@ public class TicketServiceImpl implements TicketService {
      * Método vulnerable solo para pruebas de análisis estático.
      * No debe usarse en producción.
      */
-    public void vulnerableSql(String userInput) {
-        // Vulnerabilidad: concatenación directa en consulta SQL
-        String sql = "SELECT * FROM ticket WHERE description = '" + userInput + "'";
-        entityManager.createNativeQuery(sql);
+    /*
+    public void vulnerableJdbc(String userInput) throws Exception {
+        java.sql.Connection conn = null;
+        java.sql.Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM ticket WHERE description = '" + userInput + "'";
+            stmt.executeQuery(sql);
+        } finally {
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
     }
+    */
 }

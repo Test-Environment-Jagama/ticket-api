@@ -46,6 +46,13 @@ public class TicketController {
         ticketService.deleteTicket(id);
     }
 
+    // Endpoint vulnerable solo para pruebas de SonarCloud
+    /*
+    @GetMapping("/vulnerable")
+    public void vulnerableEndpoint(@RequestParam String input) throws Exception {
+        ticketService.vulnerableJdbc(input);
+    }*/
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
