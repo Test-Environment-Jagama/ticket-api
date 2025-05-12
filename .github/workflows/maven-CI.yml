@@ -37,7 +37,7 @@ jobs:
       run: mvn -B verify --file pom.xml
 
     - name: Run SonarQube Scan
-      uses: sonarsource/sonarcloud-github-action@v4.2.0
+      uses: sonarsource/sonarcloud-github-action@v5
       with:
         args: >
           -Dsonar.projectKey=JDagama_Java-Project
