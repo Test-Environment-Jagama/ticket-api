@@ -43,4 +43,6 @@ jobs:
           -Dsonar.organization=jdagama
           -Dsonar.projectKey=ticket-api
           -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.java.binaries=target/classes
+          -Dsonar.exclusions=**/test/**,**/generated/**
           -Dsonar.verbose=true
