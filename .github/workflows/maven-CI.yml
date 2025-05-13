@@ -13,7 +13,7 @@ permissions:
   
 on:
   push:
-    branches: [ "JDagama-CI" ]
+    branches: [ "main", "JDagama-CI" ]
   workflow_dispatch:
 
 jobs:
