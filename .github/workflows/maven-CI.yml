@@ -25,7 +25,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Cache Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -42,6 +42,7 @@ jobs:
           -Dsonar.organization=jdagama
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.java.binaries=target/classes
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
