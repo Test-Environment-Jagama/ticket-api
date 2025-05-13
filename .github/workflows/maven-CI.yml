@@ -7,10 +7,6 @@
 # documentation.
 name: Java CI with Maven
 
-permissions:
-  contents: read
-  security-events: write
-  
 on:
   push:
     branches: [ "main", "JDagama-CI" ]
