@@ -39,7 +39,7 @@ jobs:
       run: mvn -B verify --file pom.xml -Dspring.profiles.active=h2
 
     - name: Run SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v1.0.1
+      uses: SonarSource/sonarqube-scan-action@v5.2.0
       with:
           projectKey: ticket-api
           organization: jdagama
