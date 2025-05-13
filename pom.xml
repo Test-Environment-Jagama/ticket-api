@@ -159,6 +159,8 @@
                                 <exclude>com/tuempresa/ticketapi/TicketApiApplication*</exclude>
                                 <exclude>com/tuempresa/ticketapi/config/**</exclude>
                                 <exclude>com/tuempresa/ticketapi/model/**</exclude>
+                                <exclude>**/Test**</exclude>
+                                <exclude>**/generated/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>

@@ -1,0 +1,48 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main", "JDagama-CI" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Build with Maven
+      run: mvn -B verify --file pom.xml -Dspring.profiles.active=h2
+
+    - name: Run SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v5.2.0
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.organization=jdagama
+          -Dsonar.projectKey=ticket-api
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.java.binaries=target/classes
+          -Dsonar.exclusions=**/test/**,**/generated/**
+          -Dsonar.verbose=true
