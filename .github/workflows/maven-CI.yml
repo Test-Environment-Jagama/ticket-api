@@ -39,7 +39,7 @@ jobs:
       with:
         args: >
           -Dsonar.projectKey=ticket-api
-          -Dsonar.organization=JDagama
+          -Dsonar.organization=jdagama
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
