@@ -39,11 +39,9 @@ jobs:
       run: mvn -B verify --file pom.xml -Dspring.profiles.active=h2
 
     - name: Run SonarQube Scan
-      uses: sonarsource/sonarcloud-github-action@v5
+      uses: SonarSource/sonarqube-scan-action@v1.0.1
       with:
-        args: >
-          -Dsonar.projectKey=ticket-api
-          -Dsonar.organization=jdagama
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.java.binaries=target/classes
+          projectKey: ticket-api
+          organization: jdagama
+          hostUrl: https://sonarcloud.io
+          token: ${{ secrets.SONAR_TOKEN }}
