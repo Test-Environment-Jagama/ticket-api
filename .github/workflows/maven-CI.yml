@@ -40,8 +40,10 @@ jobs:
 
     - name: Run SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v5.2.0
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
-          projectKey: ticket-api
-          organization: jdagama
-          hostUrl: https://sonarcloud.io
-          token: ${{ secrets.SONAR_TOKEN }}
+        args: >
+          -Dsonar.organization=jdagama
+          -Dsonar.projectKey=ticket-api
+          -Dsonar.verbose=true
