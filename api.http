@@ -5,8 +5,8 @@ POST {{host}}/api/tickets
 Content-Type: application/json
 
 {
-  "title": "Error en login",
-  "description": "No puedo iniciar sesión con mi cuenta"
+  "title": "Ticket Volatil",
+  "description": "Este ticket se eliminará pronto"
 }
 
 ### Obtener todos los tickets
