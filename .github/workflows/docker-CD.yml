@@ -29,4 +29,3 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticket-api:${{ github.sha }}
-      - name: Deploy to Docker Hub
